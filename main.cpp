@@ -10,6 +10,8 @@ int main(){
     std::cout << matriz.get(1,3) << std::endl;
     std::fstream file("arquivo.txt");
 
+    matriz.print();
+
     if(file.is_open()){
         int x, y;
         file >> x;

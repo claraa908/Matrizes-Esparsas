@@ -4,6 +4,10 @@
 #include <iostream>
 #include <stdexcept>
 
+//socoroooo
+//una bela raparigaaaa
+// ajncajnkjancjndjcnvdjf
+//holaa niños
 class SparseMatrix{
     //comentar o código!!!!
     private:
@@ -142,9 +146,14 @@ class SparseMatrix{
         return auxCol->valor;
     }
     
-    void print();
-
-    
+    void print(){
+        for(int i=1;i<=numLinhas;i++){
+            for(int j=1;j<=numColunas;j++){
+                std::cout<<get(i, j)<<" ";
+            }
+            std::cout<<"\n";
+        }
+    }
 
     void clear(){
     

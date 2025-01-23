@@ -6,7 +6,8 @@
 
 //socoroooo
 //una bela raparigaaaa
-
+// ajncajnkjancjndjcnvdjf
+//holaa niños
 class SparseMatrix{
     //comentar o código!!!!
     private:
@@ -77,14 +78,34 @@ class SparseMatrix{
         }
 
         if(value!=0){
-            
-        }
-        Node *aux=new Node(h_col, h_lin, 0, 0, 0);
+            if(this->get(i,j) == 0){
+                Node *lin = h_lin->abaixo;
+                Node *col = h_col->direita;
 
-        while(aux->colunas!=j){
-            aux=aux->direita;
+                while (lin != h_lin && lin->linhas != i){
+                    lin = lin->abaixo;
+                }
+
+                while (col != h_col && col->colunas != j){
+                    col = col->direita;
+                }
+
+                Node* aux = new Node(nullptr, nullptr, i, j, value);
+
+                Node* linAtual = lin;
+                while (linAtual->direita != lin && linAtual->direita->colunas < j){
+                    linAtual = linAtual->direita;
+                }
+                aux->direita = linAtual;
+                linAtual->direita = aux;
+
+                    
+            }else{
+                /* ATUALIZAR O VALOR DO NÓ */
+            }
         }
     }
+
 
     double get(int i, int j){
         if(j <= 0 || i <= 0 || i>numLinhas || j>numColunas ){

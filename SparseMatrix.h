@@ -12,10 +12,14 @@ class SparseMatrix{
     private:
     Node * h_lin;
     Node * h_col;
+    int numLinhas;
+    int numColunas;
     int m_size;
     
     public:
     SparseMatrix(int lin, int col){
+        numLinhas=lin;
+        numColunas=col;
         if(lin>0 && col>0){
             h_lin = new Node(nullptr, nullptr, 0, 0, 0);
             h_col = new Node(nullptr, nullptr, 0, 0, 0);
@@ -49,6 +53,7 @@ class SparseMatrix{
 
         atual->abaixo=auxLinha;
         auxLinha->abaixo=h_lin; 
+        auxLinha->direita=auxLinha;
     }
 
     void push_back_coluna(int coluna){
@@ -62,6 +67,7 @@ class SparseMatrix{
 
         atual->direita = auxCol;
         auxCol->direita= h_col;
+        auxCol->abaixo=auxCol;
     }
     
     //u ia uuu ia i i aaa
@@ -81,44 +87,82 @@ class SparseMatrix{
     }
 
     double get(int i, int j){
-        if(j <= 0 || i <= 0){
-            throw std::out_of_range("Um ou mais índices são menores ou iguais a 0");
+        if(j <= 0 || i <= 0 || i>numLinhas || j>numColunas ){
+            throw std::out_of_range("Índices Inválidos");
         }
-        Node *auxCol = h_col->direita;
+        Node *auxLin = h_lin;
         
-        while(auxCol != h_col && auxCol->colunas!=j){
-            auxCol = auxCol->direita;
-        }
-
-        if(auxCol == h_col){
-            return 0;
+        while(auxLin->linhas!=i){
+            auxLin=auxLin->abaixo;
         }
         
-        //! Verificar se o nó aponta para si mesmo
-        //! Se ele apontar para si mesmo, é porque não há nós embaixo dele
-        //! Se não prossegue.
-        if(auxCol->abaixo == auxCol){
+        if(auxLin->direita==auxLin){
             return 0;
         }
 
-        Node* auxLin = auxCol->abaixo;
-        
-        while(auxLin != auxCol && auxLin->linhas!=i){
-            auxLin= auxLin->abaixo;
+        Node *auxCol=auxLin->direita;
+
+        while(auxCol->colunas!=j && auxCol!=auxLin){
+            auxCol= auxCol->direita;
         }
 
-        if(auxLin == auxCol){
-            return 0;
-        }
-
-        return auxLin->valor;
+        return auxCol->valor;
     }
     
     void print();
 
-    ∼SparseMatrix(){
+    
 
+    void clear(){
+    
     }
+
+    bool empty(){
+        if(!h_lin || !h_col){
+            return true;
+        }
+
+        Node *aux=h_lin->abaixo;
+
+        while(aux!=h_lin){
+            if(aux->direita!=h_col){
+                return false;
+            }
+            aux=aux->abaixo;
+        }
+
+        return true;
+    }
+
+    void pop_back_linha(Node *aux){
+        
+        Node *prev=nullptr;
+        aux=h_lin->abaixo;
+
+        while(aux->direita!=h_col){
+            prev=aux;
+            aux=aux->direita;
+        }
+
+        prev->direita=h_col;
+        
+        delete aux;
+
+   }
+
+   void pop_back_coluna(Node *aux){
+        Node *prev=nullptr;
+        aux=h_col->direita;
+
+        while(aux->abaixo!=h_lin){
+            prev=aux;
+            aux=aux->abaixo;
+        }
+
+        prev->abaixo=h_lin;
+
+        delete aux;
+   }
 
 };
 #endif

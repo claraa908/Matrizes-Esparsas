@@ -4,7 +4,7 @@
 
 int main(){
     SparseMatrix matriz(1, 2);
-    std::cout << matriz.get(5,9) << std::endl;
+    std::cout << matriz.get(1,2) << std::endl;
     std::cout << 9 << std::endl;
     std::fstream file("arquivo.txt");
 
@@ -13,6 +13,10 @@ int main(){
         file >> x;
         file >> y;
         std::cout << x + y << " " << x << " " << y << std::endl;
+    }
+
+    if(matriz.empty()){
+        cout<<"vazia";
     }
 }
 

@@ -2,6 +2,9 @@
 #define SPARSE_MATRIZ_H
 #include "Node.h"
 #include <iostream>
+#include <stdexcept>
+
+//socoroooo
 
 class SparseMatrix{
     //comentar o código!!!!
@@ -108,11 +111,13 @@ class SparseMatrix{
         }
 
         return auxLin->valor;
-}
+    }
     
     void print();
 
-    //∼SparseMatrix();
+    ∼SparseMatrix(){
+
+    }
 
 };
 #endif

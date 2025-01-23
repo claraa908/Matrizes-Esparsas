@@ -3,10 +3,12 @@
 #include "SparseMatrix.h"
 
 int main(){
-    SparseMatrix matriz(1, 2);
-    std::cout << matriz.get(1,2) << std::endl;
+    SparseMatrix matriz(4, 5);
+    std::cout << matriz.get(1,1) << std::endl;
     std::cout << 9 << std::endl;
     std::fstream file("arquivo.txt");
+
+    matriz.print();
 
     if(file.is_open()){
         int x, y;

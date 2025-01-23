@@ -4,10 +4,6 @@
 #include <iostream>
 #include <stdexcept>
 
-//socoroooo
-//una bela raparigaaaa
-// ajncajnkjancjndjcnvdjf
-//holaa niños
 class SparseMatrix{
     //comentar o código!!!!
     private:
@@ -71,14 +67,13 @@ class SparseMatrix{
         auxCol->abaixo=auxCol;
     }
     
-    //u ia uuu ia i i aaa
     void insert(int i, int j, double value){
         if(j <= 0 || i <= 0){
             throw std::out_of_range("Um ou mais índices são menores ou iguais a 0");
         }
 
-        if(value!=0){
-            if(this->get(i,j) == 0){
+        if(value != 0){
+            if(this->get(i, j) == 0){
                 Node *lin = h_lin->abaixo;
                 Node *col = h_col->direita;
 
@@ -96,12 +91,29 @@ class SparseMatrix{
                 while (linAtual->direita != lin && linAtual->direita->colunas < j){
                     linAtual = linAtual->direita;
                 }
-                aux->direita = linAtual;
+                aux->direita = linAtual->direita;
                 linAtual->direita = aux;
 
-                    
+                Node* colAtual = col;
+                while(colAtual->abaixo != col && colAtual->abaixo->linhas < i){
+                    colAtual = colAtual->abaixo;
+                }
+                aux->abaixo = colAtual->abaixo;
+                colAtual->abaixo = aux;
+
+                m_size++;
             }else{
-                /* ATUALIZAR O VALOR DO NÓ */
+                Node* auxLin = h_lin->abaixo;
+                while (auxLin != h_lin && auxLin->linhas != i) {
+                    auxLin = auxLin->abaixo;
+                }
+
+                Node* auxCol = auxLin->direita;
+                while(auxCol->colunas!=j && auxCol!=auxLin){
+                    auxCol= auxCol->direita;
+                }
+
+                auxCol->valor = value;
             }
         }
     }

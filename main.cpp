@@ -3,9 +3,11 @@
 #include "SparseMatrix.h"
 
 int main(){
-    SparseMatrix matriz(1, 2);
-    std::cout << matriz.get(1,2) << std::endl;
-    std::cout << 9 << std::endl;
+    SparseMatrix matriz(3,3);
+    matriz.insert(1, 1, 99);
+    matriz.insert(1, 3, 87);
+    matriz.insert(1, 1, 100);
+    std::cout << matriz.get(1,3) << std::endl;
     std::fstream file("arquivo.txt");
 
     if(file.is_open()){

@@ -145,6 +145,11 @@ class SparseMatrix{
 
         return auxCol->valor;
     }
+
+    void remove(int i, int j){
+        
+       
+    }
     
     void print(){
         for(int i=1;i<=numLinhas;i++){

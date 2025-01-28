@@ -18,6 +18,11 @@ struct Node{
         this->colunas=colunas;
         this->valor=valor;
     }
+
+    ~Node(){
+        delete direita;
+        delete abaixo;
+    }
 };
 
 #endif

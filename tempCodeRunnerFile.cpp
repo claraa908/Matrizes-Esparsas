@@ -1,1 +1,1 @@
-    matriz.insert(1, 1, 100);
+matriz.remove(1, 3);

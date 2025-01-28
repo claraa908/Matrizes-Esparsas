@@ -160,15 +160,42 @@ class SparseMatrix{
         }
     }
 
-    void clear(){
-        delete h_lin;
-        delete h_col;
+    //! função para remover nó de determinada posição da matriz
+    void remove(int i, int j){
+        if(i <= 0 || j <= 0 || i > numLinhas || j > numColunas){
+            throw std::out_of_range("Índices Inválidos");
+        }
 
-        h_lin->abaixo=h_lin;
-        h_col->direita=h_col;
+        //! Ponteiro de linha para chegar a linha correspondente e ficar com o valor fixo dela
+        Node *lin = h_lin->abaixo;
+        while (lin != h_lin && lin->linhas != i){
+            lin = lin->abaixo;
+        }
 
-        m_size=0;
-    
+        Node *aux = lin;
+        Node *prev = aux;
+        //! movimenta os ponteiros se necessário
+        while(aux->direita != lin && aux->colunas != j){
+            prev = aux;
+            aux = aux->direita;
+        }
+        prev->direita = aux->direita;
+
+        Node *col = h_col->direita;
+        while (col != h_col && col->colunas != j){
+            col = col->direita;
+        }
+
+        aux = col;
+        prev = aux;
+        while(aux->abaixo != col && aux->linhas != i){
+            prev = aux;
+            aux = aux->abaixo;
+        }
+
+        prev->abaixo = aux->abaixo;
+
+        delete aux;
     }
 
     bool empty(){
@@ -219,9 +246,15 @@ class SparseMatrix{
    }
 
    ~SparseMatrix(){
-        delete h_lin;
-        delete h_col;
-   }
+    //! remove os nó da matriz
+        for (int i = 1; i <= numLinhas; i++) {
+            for (int j = 1; j <= numColunas; j++) {
+                if (get(i, j) != 0) { // Verifica se existe um nó na posição
+                    remove(i, j); // Remove o nó
+                }
+            }
+        }
 
+   }
 };
 #endif

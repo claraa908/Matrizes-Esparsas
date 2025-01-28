@@ -11,7 +11,6 @@ int main(){
     std::cout << matriz.get(1,1) << std::endl;
     std::fstream file("arquivo.txt");
 
-    matriz.clear();
     matriz.print();
 
     if(file.is_open()){

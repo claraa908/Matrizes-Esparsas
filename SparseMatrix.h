@@ -242,13 +242,7 @@ class SparseMatrix{
 
    ~SparseMatrix(){
     //! remove os nó da matriz
-        for (int i = 1; i <= numLinhas; i++) {
-            for (int j = 1; j <= numColunas; j++) {
-                if (get(i, j) != 0) { // Verifica se existe um nó na posição
-                    remove(i, j); // Remove o nó
-                }
-            }
-        }
+    Node* linhaAtual = h_lin->abaixo;
 
    }
 };

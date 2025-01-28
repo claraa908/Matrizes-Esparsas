@@ -7,9 +7,11 @@ int main(){
     matriz.insert(1, 1, 99);
     matriz.insert(1, 3, 87);
     matriz.insert(1, 1, 100);
-    std::cout << matriz.get(1,3) << std::endl;
+    matriz.insert(2, 1, 24);
+    std::cout << matriz.get(1,1) << std::endl;
     std::fstream file("arquivo.txt");
 
+    matriz.clear();
     matriz.print();
 
     if(file.is_open()){

@@ -145,6 +145,11 @@ class SparseMatrix{
 
         return auxCol->valor;
     }
+
+    void remove(int i, int j){
+        
+       
+    }
     
     void print(){
         for(int i=1;i<=numLinhas;i++){
@@ -156,6 +161,13 @@ class SparseMatrix{
     }
 
     void clear(){
+        delete h_lin;
+        delete h_col;
+
+        h_lin->abaixo=h_lin;
+        h_col->direita=h_col;
+
+        m_size=0;
     
     }
 
@@ -204,6 +216,11 @@ class SparseMatrix{
         prev->abaixo=h_lin;
 
         delete aux;
+   }
+
+   ~SparseMatrix(){
+        delete h_lin;
+        delete h_col;
    }
 
 };

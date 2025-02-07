@@ -18,12 +18,6 @@ struct Node{
         this->colunas=colunas;
         this->valor=valor;
     }
-
-    // Método destrutor do nó
-    ~Node(){
-        direita=nullptr;
-        abaixo=nullptr;
-    }
 };
 
 #endif

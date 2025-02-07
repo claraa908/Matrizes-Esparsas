@@ -1,1 +1,3 @@
-matriz.remove(1, 3);
+ite 's' para salvar ou 'n' para descartar." << endl;
+                    }
+                }

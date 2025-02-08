@@ -21,7 +21,7 @@ class SparseMatrix{
     // em uma estrutura de repetição.
     void push_back_linha(int linha){
         // Nó auxiliar que vai ajudar a inserir os nós sentinelas de acordo com o número de linhas
-        Node *auxLinha=new Node(nullptr, nullptr, linha, 0, 0);
+        Node *auxLinha = new Node(nullptr, nullptr, linha, 0, 0);
 
         // Nó que representa a posição atual da lista de linhas
         Node *atual = h_lin;
@@ -29,15 +29,15 @@ class SparseMatrix{
         // Percorre atual até que a posição abaixo esteja apontando
         // para h_lin (que representa o início de tudo)
         while(atual->abaixo != h_lin){
-            atual=atual->abaixo;
+            atual = atual->abaixo;
         }
 
         // A posição abaixo de atual recebe o ponteiro auxiliar de linha
-        atual->abaixo=auxLinha;
+        atual->abaixo = auxLinha;
         // Faz a posição abaixo apontar de volta para h_lin (lista circular)
-        auxLinha->abaixo=h_lin;
+        auxLinha->abaixo = h_lin;
         // Faz a posição a direita apontar de volta para auxLinha (lista circular)
-        auxLinha->direita=auxLinha;
+        auxLinha->direita = auxLinha;
     }
 
     // Método auxiliar do Construtor que insere cada nó
@@ -61,9 +61,9 @@ class SparseMatrix{
         // A posição abaixo de atual recebe o ponteiro auxiliar de coluna
         atual->direita = auxCol;
         // Faz a posição a direita apontar de volta para h_col (lista circular)
-        auxCol->direita= h_col;
+        auxCol->direita = h_col;
         // Faz a posição abaixo apontar de volta para auxCol (lista circular)
-        auxCol->abaixo=auxCol;
+        auxCol->abaixo =auxCol;
     }
     
     public:
@@ -71,8 +71,8 @@ class SparseMatrix{
     SparseMatrix(int lin, int col){
 
         // Inicializa numLinhas e numColunas
-        numLinhas=lin;
-        numColunas=col;
+        numLinhas = lin;
+        numColunas = col;
 
         // Verifica se tamanho para o cabeçalho é válido
         if(lin>0 && col>0){
@@ -194,32 +194,45 @@ class SparseMatrix{
         }
     }
 
-        //! função para remover nó de determinada posição da matriz
+
+//! ver isso amanhã, talvez arrumar possíveis erros
+    // função para remover nó de determinada posição da matriz
     void remove(int i, int j){
+
+        // verifica se os indices estão dentro dos limites válidos da matriz
         if(i <= 0 || j <= 0 || i > numLinhas || j > numColunas){
             throw std::out_of_range("Índices Inválidos");
         }
 
-        //! Ponteiro de linha para chegar a linha correspondente e ficar com o valor fixo dela
+        // ponteiro de linhas que vai percorrer a lista até encontrar a linha correspondente
+        // quando encontrar o cabeçalho quer dizer que a linha não existe
         Node *lin = h_lin->abaixo;
         while (lin != h_lin && lin->linhas != i){
             lin = lin->abaixo;
         }
 
-        Node *aux = lin;
-        Node *prev = aux;
-        //! movimenta os ponteiros se necessário
+        Node *aux = lin; // ponteiro auxliar que vai se movimentar pela linha até encontrar j
+        Node *prev = aux; // ponteiro que vai ficar com uma posição anterior ao auxiliar para facilitar a remoção
+
+        // percorre a linha até encontrar j se o nó não existir aux estará no início da linha
         while(aux->direita != lin && aux->colunas != j){
             prev = aux;
             aux = aux->direita;
         }
+
+        // se aux for encontrado, ajusta o ponteiro para direita de prev 
+        // para ignorar aux e conectar prev ao próximo nó
+        // removendo aux da linha.
         prev->direita = aux->direita;
 
+        // ponteiro de colunas que vai percorrer a lista até encontrar a coluna correspondente
+        // se col encontrar o inicio do cabeçalho quer dizer que a coluna não existe
         Node *col = h_col->direita;
         while (col != h_col && col->colunas != j){
             col = col->direita;
         }
 
+        // percorre a coluna para encontrar o nó de aux na posição i
         aux = col;
         prev = aux;
         while(aux->abaixo != col && aux->linhas != i){
@@ -227,8 +240,16 @@ class SparseMatrix{
             aux = aux->abaixo;
         }
 
+        //ajusta o prev para apontar para o valor que aux aponta, para poder removê-lo da coluna
         prev->abaixo = aux->abaixo;
 
+        // verifica se aux aponta para um nó válido antes de deletar
+        // se o nó não existir lança uma exceção informando que a posição está vazia
+        if(aux->abaixo->valor == 0){
+            throw runtime_error("nao ha no nessa posicao");
+        }
+
+        // deleta o nó
         delete aux;
     }
 
@@ -237,32 +258,32 @@ class SparseMatrix{
 
         // Verifica se os índices ultrapassam os limites da matriz
         // Se ultrapassar, lança uma exceção
-        if(j <= 0 || i <= 0 || i>numLinhas || j>numColunas ){
+        if(j <= 0 || i <= 0 || i > numLinhas || j > numColunas ){
             throw std::out_of_range("Indices Invalidos");
         }
         // Ponteiro para percorrer as linhas
         Node *auxLin = h_lin;
         
         // Laço que percorre as linhas até chegar na linha fornecida nos parâmetros
-        while(auxLin->linhas!=i){
-            auxLin=auxLin->abaixo;
+        while(auxLin->linhas != i){
+            auxLin = auxLin->abaixo;
         }
         
         // Verifica se tem algum nó na linha fornecida
         // Se não tiver, retorna 0
-        if(auxLin->direita==auxLin){
+        if(auxLin->direita == auxLin){
             return 0;
         }
 
         // Ponteiro para percorrer as colunas
         // Obs: Esse ponteiro já está na linha fornecida
-        Node *auxCol=auxLin->direita;
+        Node *auxCol = auxLin->direita;
 
         // Laço que percorre as colunas até chegar na coluna fornecida nos parâmetros
         /*Como o auxCol já estava apontando para a posição da linha, ao final do laço
         o auxCol estará apontando diretamente para o nó que corresponde ao índice fornecido*/
-        while(auxCol->colunas!=j && auxCol!=auxLin){
-            auxCol= auxCol->direita;
+        while(auxCol->colunas != j && auxCol != auxLin){
+            auxCol = auxCol->direita;
         }
 
         // Retorna o valor do nó na posição do índice fornecido
@@ -273,34 +294,34 @@ class SparseMatrix{
     void print(){
 
         // Variável que define o tamanho da coluna no terminal
-        int tamanho_coluna=8;
+        int tamanho_coluna = 8;
         // Variável que armazena o largura total da matriz
-        int largura_total=tamanho_coluna*numColunas+numColunas+1;
+        int largura_total = tamanho_coluna * numColunas + numColunas+1;
 
         // Imprime uma linha reta pontilhda no terminal
-        for(int i=0;i<largura_total;++i){
-            std::cout<<"-";
+        for(int i = 0; i < largura_total; ++i){
+            std::cout << "-";
         }
         // Quebra de linha
-        std::cout<<"\n";
+        std::cout << "\n";
 
         // For dentro de um For que percorre a matriz por inteiro
         // Chama a função get(int i, int j) para pegar o valor de cada posição da matriz
-        for(int i=1;i<=numLinhas;i++){
+        for(int i = 1; i <= numLinhas; i++){
             // Imprime uma barra no início de cada linha
-            std::cout<<"|";
-            for(int j=1;j<=numColunas;j++){
+            std::cout << "|";
+            for(int j = 1; j <= numColunas; j++){
                 // Formatação das colunas
-                std::cout<<std::setw(tamanho_coluna)<<std::fixed<<std::setprecision(1)<<get(i, j)<<"|";
+                std::cout << std::setw(tamanho_coluna) << std::fixed << std::setprecision(1) << get(i, j) << "|";
             }
-            std::cout<<"\n";
+            std::cout << "\n";
         }
 
         // Imprime uma linha reta pontilhada no terminal
-        for(int i=0;i<largura_total;++i){
-            std::cout<<"-";
+        for(int i = 0; i < largura_total; ++i){
+            std::cout << "-";
         }
-        cout<<endl;
+        cout << endl;
     }
 
     // Função que retorna o número de linhas da matriz

@@ -8,28 +8,42 @@
 #include "SparseMatrix.h"
 using namespace std;
 
+// Função responsável por ler um arquivo .txt e converter os dados
+// fornecidos por ele em uma matriz esparsa
 void readSparseMatrix(SparseMatrix*& m, string nome_do_arquivo){
+
+    // Abre o arquivo usando o ftream
     fstream file(nome_do_arquivo);
 
+    // Verifica se o arquivo está aberto adequadamente
+    // Se não estiver, lança uma exceção
     if(!file.is_open()){
         throw runtime_error("Erro ao abrir o arquivo");
     }
 
-    int x, y;
-    file >> x >> y;
+    int x, y; // Variáveis para armazenar o número de linhas e colunas da matriz
+    file >> x >> y; // Lê a primeira linha do documento, armazenando o número de
+                    // de linhas e colunas nas variáveis
         
+    // Inicializa a matriz m com o número de linhas e colunas lido no documento
     m=new SparseMatrix(x, y);
 
+    // Ignora o caractere de nova linha após a leitura da primeira linha do documento
     file.ignore();
-    string linha;
+
+    string linha; // Variável para armazenar cada linha lida do documento
     
-    int i, j;
-    double value;
+    int i, j; // Variáveis para armazenar o número de linhas e colunas
+    double value; // Variável para armazenar o valor na posição i,j
+
+    // Lê cada linha restante do documento
     while(getline(file, linha)){
-        stringstream ss(linha);
-        ss >> i >> j >> value;
-        
-        m->insert(i, j, value);
+        stringstream ss(linha); // Armazena a linha lida em uma stringstream
+
+        ss >> i >> j >> value; // Passa os valores da stringstream para as 
+                                // variáveis correspondentes
+
+        m->insert(i, j, value); // Insere o valor lido na matriz m nas posições i, j
     }
 }
 
@@ -37,22 +51,25 @@ void readSparseMatrix(SparseMatrix*& m, string nome_do_arquivo){
 SparseMatrix* sum(SparseMatrix* &A, SparseMatrix* &B){
 
     // Verificação se as duas matrizes possuem o mesmo número de linhas e colunas
+    // Se não tiverem, é lançada uma exceção
     if(A->getLinhas() == B->getLinhas() && A->getColunas() == B->getColunas()){
-        SparseMatrix* matrizSomada=new SparseMatrix(A->getLinhas(), A->getColunas());
+        // Cria uma nova matriz possuindo as dimensões da matriz A
+        SparseMatrix* matrizSomada = new SparseMatrix(A->getLinhas(), A->getColunas());
             
-            for(int i=1;i<=A->getLinhas();i++){
-                for(int j=1;j<=A->getColunas();j++){
+            // Percorre a matriz recém criada
+            for(int i = 1; i <= matrizSomada->getLinhas(); i++){
+                for(int j = 1; j <= matrizSomada->getColunas(); j++){
 
-                    double valorA=A->get(i, j);
-                    double valorB=B->get(i, j);
+                    double valorA = A->get(i, j); // Obtém o valor da matriz A na posição i,j
+                    double valorB = B->get(i, j); // Obtém o valor da matriz B na posição i,j
 
-                    double soma=valorA+valorB;
+                    double soma = valorA+valorB; // Faz a soma dos valores de A e B
 
-                    matrizSomada->insert(i, j, soma);
+                    matrizSomada->insert(i, j, soma); // Insere a soma na nova matriz
                 }
             }
 
-            return matrizSomada;
+            return matrizSomada; // Retorna a nova matriz contendo a soma das matrizes A e B
         } else {
 
         throw out_of_range("Nao e possivel somar essas duas matrizes");
@@ -64,23 +81,26 @@ SparseMatrix* sum(SparseMatrix* &A, SparseMatrix* &B){
 SparseMatrix* subtraction(SparseMatrix* &A, SparseMatrix* &B){
 
     // Verificação se as duas matrizes possuem o mesmo número de linhas e colunas
-    if(A->getLinhas()==B->getLinhas()&&A->getColunas()==B->getColunas()){
-        SparseMatrix* matrizSubtraida=new SparseMatrix(A->getLinhas(), A->getColunas());
+    // Se não tiverem, é lançada uma exceção
+    if(A->getLinhas() == B->getLinhas() && A->getColunas() == B->getColunas()){
+        // Cria uma nova matriz possuindo as dimensões da matriz A
+        SparseMatrix* matrizSubtraida = new SparseMatrix(A->getLinhas(), A->getColunas());
             
-            for(int i=1;i<=A->getLinhas();i++){
-                for(int j=1;j<=A->getColunas();j++){
+            // Percorre a matriz recém criada
+            for(int i = 1; i <= matrizSubtraida->getLinhas(); i++){
+                for(int j = 1; j <= matrizSubtraida->getColunas(); j++){
 
-                    double valorA=A->get(i, j);
-                    double valorB=B->get(i, j);
+                    double valorA = A->get(i, j); // Obtém o valor da matriz A na posição i,j
+                    double valorB = B->get(i, j); // Obtém o valor da matriz B na posição i,j
 
-                    double subtracao=valorA-valorB;
+                    double subtracao = valorA-valorB; // Faz a subtração dos valores de A e B
 
-                    matrizSubtraida->insert(i, j, subtracao);
+                    matrizSubtraida->insert(i, j, subtracao); // Insere a subtração na nova matriz
                     
                 }
             }
 
-            return matrizSubtraida;
+            return matrizSubtraida; // Retorna a nova matriz contendo a subtração das matrizes A e B
         } else {
 
         throw out_of_range("Nao e possivel subtrair essas duas matrizes");
@@ -88,33 +108,39 @@ SparseMatrix* subtraction(SparseMatrix* &A, SparseMatrix* &B){
     
 }
 
+// Função que multiplica duas matrizes
 SparseMatrix* multiply(SparseMatrix* &A, SparseMatrix* &B){
 
+    // Verifica se o número de colunas da matriz A é igual ao número de linhas da matriz B
+    // Se não for, uma exceção é lançada
     if(A->getColunas() == B->getLinhas()){
 
-        SparseMatrix* matrizMultiplicada=new SparseMatrix(A->getLinhas(), B->getColunas());
+        // Cria uma nova matriz com a quantidade de linhas de A e a de colunas de B
+        SparseMatrix* matrizMultiplicada = new SparseMatrix(A->getLinhas(), B->getColunas());
 
-        double soma=0;
+        double soma = 0; // Variável para acumular a soma dos produtos
 
-        for(int i=1;i<=A->getLinhas();i++){
-            for(int j=1;j<=B->getColunas();j++){
+        // Percorre a matriz recém criada
+        for(int i = 1; i <= matrizMultiplicada->getLinhas(); i++){
+            for(int j = 1; j <= matrizMultiplicada->getColunas(); j++){
 
-                soma=0;
+                soma = 0; // Reseta a soma dos produtos a cada repetição do laço
 
-                for(int k=1;k<=A->getColunas();k++){
-                    double valorA=A->get(i, k);
-                    double valorB=B->get(k, j);
+                // Percorre o número de colunas da matriz A
+                for(int k = 1; k <= A->getColunas(); k++){ 
+                    double valorA = A->get(i, k); // Armazena o valor de A na posição i, k
+                    double valorB = B->get(k, j); // Armazena o valor de B na posição k, j
 
-                    double mult=valorA*valorB;
+                    double mult = valorA * valorB; // Multiplica os valores de A e B
 
-                    soma+=mult;
+                    soma += mult; // Soma o resultado da multiplicação no acumulador
                 }
 
-                matrizMultiplicada->insert(i, j, soma);
+                matrizMultiplicada->insert(i, j, soma); // Insere o resultado da soma do acumulador na nova matriz
             }
         }
 
-        return matrizMultiplicada;
+        return matrizMultiplicada; // Retorna a nova matriz com a multiplicação de A e B
 
 
     } else {
@@ -632,8 +658,10 @@ int main(){
                 continue;
             }
 
-            // .....(não sei como funciona isso)
+            // Define o tamanho padrão de cada coluna da tabela que é mostrada no terminal
             int tamanho_coluna = 4;
+
+            // Define a largura total da tabela mostrada no terminal
             int largura_total = tamanho_coluna * 2 + 3;
             
             // Imprime uma linha reta pontilhda no terminal
@@ -643,8 +671,12 @@ int main(){
 
             // Quebra de linha
             cout << "\n";
+
+            // Percorre a lista de matrizes
             for(int i = 0; i < listaMatriz.size(); i++){
+                // Imprime uma barra no início de cada linha
                 cout << i << "|";
+                // Formatação das colunas
                 cout << setw(tamanho_coluna) << fixed << "Matriz " << i << "|";
                 cout << endl;
             }

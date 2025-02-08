@@ -243,6 +243,9 @@ class SparseMatrix{
         //ajusta o prev para apontar para o valor que aux aponta, para poder removê-lo da coluna
         prev->abaixo = aux->abaixo;
 
+        //atualiza o contador de nós
+        m_node--;
+
         // verifica se aux aponta para um nó válido antes de deletar
         // se o nó não existir lança uma exceção informando que a posição está vazia
         if(aux->abaixo->valor == 0){
@@ -251,6 +254,7 @@ class SparseMatrix{
 
         // deleta o nó
         delete aux;
+         
     }
 
     // Função que retorna um determinado valor da matriz na posição dos índices fornecidos
@@ -334,6 +338,10 @@ class SparseMatrix{
         return numColunas;
     }
 
+    int getQntNos(){
+        return m_node;
+    }
+
     void clear() {
         // Começa a partir da primeira linha de dados (abaixo do cabeçalho)
         Node* linhaAtual = h_lin->abaixo;  // h_lin é o cabeçalho das linhas
@@ -386,6 +394,9 @@ class SparseMatrix{
             }
             linha = linha->abaixo;
         }
+
+        // Atualiza o contador de nós
+        m_node=0;
     }
 
  ~SparseMatrix() {

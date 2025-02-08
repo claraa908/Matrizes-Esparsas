@@ -659,10 +659,10 @@ int main(){
             }
 
             // Define o tamanho padrão de cada coluna da tabela que é mostrada no terminal
-            int tamanho_coluna = 4;
+            int tamanho_coluna = 10;
 
             // Define a largura total da tabela mostrada no terminal
-            int largura_total = tamanho_coluna * 2 + 3;
+            int largura_total = tamanho_coluna * 4 + 5;
             
             // Imprime uma linha reta pontilhda no terminal
             for(int i = 0; i < largura_total; ++i){
@@ -672,12 +672,31 @@ int main(){
             // Quebra de linha
             cout << "\n";
 
+            // Cabeçalho da tabela que aparece no terminal
+            cout << "|" << setw(tamanho_coluna) << left << "Index" << "|";
+            cout << setw(tamanho_coluna) << left << "Nome" << "|";
+            cout << setw(tamanho_coluna) << left << "Dimensao" << "|";
+            cout << setw(tamanho_coluna) << left << "Elementos" << "|";
+            
+
+            // Quebra de linha
+            cout << "\n";
+
             // Percorre a lista de matrizes
             for(int i = 0; i < listaMatriz.size(); i++){
+
+                // Criação de strings com as informações que aparecem na tabela de matrizes
+                string nome = ("Matriz " + to_string(i));
+                string dimensao = (to_string(listaMatriz[i]->getLinhas()) + " x " + to_string(listaMatriz[i]->getColunas()));
+                string elementos = (to_string(listaMatriz[i]->getQntNos()));
+
                 // Imprime uma barra no início de cada linha
-                cout << i << "|";
+                cout << "|" << setw(tamanho_coluna) << left << i << "|";
+
                 // Formatação das colunas
-                cout << setw(tamanho_coluna) << fixed << "Matriz " << i << "|";
+                cout << setw(tamanho_coluna) << left << nome << "|";
+                cout << setw(tamanho_coluna) << left << dimensao << "|";
+                cout << setw(tamanho_coluna) << left << elementos << "|";
                 cout << endl;
             }
 

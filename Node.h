@@ -3,6 +3,12 @@
 #include <iostream>
 using namespace std;
 
+/*
+* @authors 
+* Alana Maria Sousa Augusto - 564976
+* Clara Cruz Alves - 568563
+*/
+
 struct Node{
     Node *direita; // Ponteiro para o elemento da direita
     Node *abaixo; // Ponteiro para o elemento abaixo

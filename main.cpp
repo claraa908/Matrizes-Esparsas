@@ -8,6 +8,12 @@
 #include "SparseMatrix.h"
 using namespace std;
 
+/*
+* @authors 
+* Alana Maria Sousa Augusto - 564976
+* Clara Cruz Alves - 568563
+*/
+
 // Função responsável por ler um arquivo .txt e converter os dados
 // fornecidos por ele em uma matriz esparsa
 void readSparseMatrix(SparseMatrix*& m, string nome_do_arquivo){
@@ -208,13 +214,13 @@ int main(){
         // verifica se a primeira posição do vetor está escrito 'ajuda' 
         // e retorna o cabeçalho contendo os de comandos
         // após o retorno ele reinicia o laço while para receber um novo comando
-        if(comando[0] == "ajuda"){
+        if(comando[0] == "ajuda" && comando.size() == 1){
             mostrarAjuda();
             continue;
         }
 
         // comando sair que encerra o laço while caso o usuário escreva o comando 'sair'
-        if(comando[0] == "sair"){
+        if(comando[0] == "sair" && comando.size() == 1){
             cout << "Encerrando sistema..." << endl;
             break;
         }
@@ -240,7 +246,7 @@ int main(){
                 cout << "matriz " << listaMatriz.size() - 1 << " foi criada com sucesso!" << endl;
                 continue;
             }
-            // aqui no catch ele vai exibir ou exeção de valores não inteiros ou a exeção do construtor de indices invalidos
+            // aqui no catch ele vai exibir ou exceção de valores não inteiros ou a exceção do construtor de indices invalidos
             catch(const invalid_argument& e){
                 cout << "erro: tipo do indice inserido e invalido, insira valores inteiros." << endl;
                 continue;
@@ -251,7 +257,7 @@ int main(){
         }
 
         // comando mostrar matriz
-        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exeções sem sair do while
+        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while
         if(comando[0] == "mostrar" && comando.size() == 2){
             try{
                 // verifica se o valor é inteiro já que a conversão do stoi não verifica
@@ -285,7 +291,7 @@ int main(){
         }
 
         // comando soma
-        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exeções sem sair do while
+        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while
         if(comando[0] == "soma" && comando.size() == 3){
             try{
                 // verifica antes da conversão se os valores são inteiros
@@ -339,7 +345,7 @@ int main(){
                     continue;
                 }
             }
-            // esses catchs vão notificar ou a exeção do valor não ser inteiro ou a exeção da função somar
+            // esses catchs vão notificar ou a exceção do valor não ser inteiro ou a exceção da função somar
             catch(const invalid_argument& e){
                 cout << "erro: tipo do indice inserido e invalido, insira valores inteiros." << endl;
                 continue;
@@ -350,7 +356,7 @@ int main(){
         }
 
         // comando de subtração
-        //faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exeções sem sair do while    
+        //faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while    
         if(comando[0] == "sub" && comando.size() == 3){
             try{
                 // verifica antes da conversão se os valores são inteiros
@@ -404,7 +410,7 @@ int main(){
                     continue;
                 }
             }
-            // esses catchs vão notificar ou a exeção do valor não ser inteiro ou a exeção da função subtrair
+            // esses catchs vão notificar ou a exceção do valor não ser inteiro ou a exceção da função subtrair
             catch(const invalid_argument& e){
                 cout << "erro: tipo do indice inserido e invalido, insira valores inteiros." << endl;
                 continue;
@@ -415,7 +421,7 @@ int main(){
         }
 
         // comando multiplicar
-        //faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exeções sem sair do while    
+        //faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while    
         if(comando[0] == "mult" && comando.size() == 3){
             try{
                 // verifica antes da conversão se os valores são inteiros
@@ -469,7 +475,7 @@ int main(){
                     continue;
                 }
             }
-            // esses catchs vão notificar ou a exeção do valor não ser inteiro ou a exeção da função multiplicar
+            // esses catchs vão notificar ou a exceção do valor não ser inteiro ou a exceção da função multiplicar
             catch(const invalid_argument& e){
                 cout << "erro: tipo do indice inserido e invalido, insira valores inteiros." << endl;
                 continue;
@@ -480,7 +486,7 @@ int main(){
         }
 
         // comando limpar
-        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exeções sem sair do while    
+        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while    
         if(comando[0] == "limpar" && comando.size() == 2){
             try{
                 // verifica antes da conversão se o valor é inteiro
@@ -515,7 +521,7 @@ int main(){
         }
 
         // comando remover
-        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exeções sem sair do while
+        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while
         if(comando[0] == "remover" && comando.size() == 4){
             try{
                 // verifica antes da conversão se os valores são inteiros
@@ -563,7 +569,7 @@ int main(){
 
         // comando de apagarTudo
         // faz a verificação do comando digitado pelo usuario
-        if(comando[0] == "apagarTudo"){
+        if(comando[0] == "apagarTudo"  && comando.size() == 1){
             // caso a lista esteja vazia avisa que não tem o que apagar
             if(listaMatriz.empty()){
                 cout << "nao ha matrizes no vetor para serem removidas." << endl;
@@ -584,7 +590,7 @@ int main(){
 
 
         // comando ler
-        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exeções sem sair do while
+        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while
         if(comando[0] == "ler" && comando.size() == 2){
             try{
                 // cria um ponteiro para uma matriz default
@@ -605,14 +611,14 @@ int main(){
         }
 
         // comando atualizar
-        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exeções sem sair do while
+        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while
         if(comando[0] == "atualizar" && comando.size() == 5){
             try{
-                // verifica antes da conversão se os valores são inteiros e se o valor que vai ser inserido é double
+                // verifica antes da conversão se os valores de posicao da matriz no vetor 
+                // e os valores de posicao são inteiros
                 if((comando[1].find(".") != string::npos || comando[1].find(",") != string::npos) &&
                 (comando[2].find(".") != string::npos || comando[2].find(",") != string::npos) && 
-                (comando[3].find(".") != string::npos || comando[3].find(",") != string::npos) &&
-                (comando[4].find(".") == string::npos || comando[4].find(",") == string::npos)){
+                (comando[3].find(".") != string::npos || comando[3].find(",") != string::npos)){
                     throw invalid_argument("valor int ou double nao inserido");
                 }
 
@@ -631,7 +637,7 @@ int main(){
                         continue;
                     }else if(i == 0 || i < listaMatriz.size()){
                         listaMatriz[i]->insert(n, m, value);
-                        cout << "posicao (" << n << ", " << m << ") da matriz " << i << " foi atualizada com o valor" << value << " com sucesso!" << endl;
+                        cout << "posicao (" << n << ", " << m << ") da matriz " << i << " foi atualizada com o valor " << value << " com sucesso!" << endl;
                         continue;
                     }else{
                         cout << "nao existe matriz nessa posicao, digite uma posicao valida." << endl;
@@ -651,7 +657,7 @@ int main(){
 
         // comando listas
         // faz a verificação do comando digitado pelo usuario
-        if(comando[0] == "listar"){       
+        if(comando[0] == "listar" && comando.size() == 1){       
             // verifica se a lista não está vazia
             if(listaMatriz.empty()){
                 cout << "nao ha nenhuma matriz registrada, insira uma matriz na lista." << endl;

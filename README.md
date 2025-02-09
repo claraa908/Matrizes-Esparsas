@@ -1,7 +1,7 @@
 # Matrizes-Esparsas
-# Descrição do projeto
+## Descrição do projeto
 
-O projeto ”Matrizes Esparsas” consiste em uma estrutura de dados que permite a criação
+O projeto <ins>”Matrizes Esparsas”</ins> consiste em uma estrutura de dados que permite a criação
 de matrizes esparsas a partir de listas simplesmente encadeadas circulares. A estrutura foi
 implementada com a cração dos arquivos Node.h e SparseMatrix.h. O primeiro contém
 os atributos necessários para criar um nó que representa uma posição específica da matriz,
@@ -16,6 +16,6 @@ também implementa uma interface funcional, interativa e amigável para o usuár
 com o sistema e poder criar suas próprias matrizes e conseguir manipulá-las como
 bem entender.
 
-Projeto feito por:
+**Projeto feito por:**
 - Alana Maria Sousa Augusto - 564976
 - Clara Cruz Alves - 568563

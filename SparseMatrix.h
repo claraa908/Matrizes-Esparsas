@@ -311,6 +311,7 @@ class SparseMatrix{
     void print(){
         // Variável que define o tamanho da coluna no terminal
         int tamanho_coluna = 8;
+
         // Variável que armazena o largura total da matriz
         int largura_total = tamanho_coluna * numColunas + numColunas+1;
 
@@ -446,6 +447,29 @@ class SparseMatrix{
         // Remove os cabeçalhos principais da matriz
         delete h_lin;
         delete h_col;
+    }
+
+    // Sobrecarga do operador de igualdade
+    bool operator==(const SparseMatrix& matriz) const{
+        
+        // Primeiro verifica se o tamanho de ambas matrizes são iguais
+        // Caso não seja, retorna falso
+        if(this->numColunas != matriz.numColunas || this->numLinhas != matriz.numLinhas){
+            return false;
+        }
+
+        // Caso seja vai ser percorrido as linhas e colunas e comparado cada valor de ambas
+        // se um único valor for diferente, retorna falso
+        for(int i = 1; i <= this->numLinhas; i++){
+            for(int j = 1; j <= this->numColunas; j++){
+                if(this->get(i, j) != matriz.get(i, j)){
+                    return false;
+                }
+            }
+        }
+
+        // Após todas essas verificações, se nenhuma condição for satisfeita retorna verdadeiro
+        return true;
     }
 };
 

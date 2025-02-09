@@ -17,7 +17,6 @@ using namespace std;
 // Função responsável por ler um arquivo .txt e converter os dados
 // fornecidos por ele em uma matriz esparsa
 void readSparseMatrix(SparseMatrix*& m, string nome_do_arquivo){
-
     // Abre o arquivo usando o ftream
     fstream file(nome_do_arquivo);
 
@@ -32,7 +31,7 @@ void readSparseMatrix(SparseMatrix*& m, string nome_do_arquivo){
                     // de linhas e colunas nas variáveis
         
     // Inicializa a matriz m com o número de linhas e colunas lido no documento
-    m=new SparseMatrix(x, y);
+    m = new SparseMatrix(x, y);
 
     // Ignora o caractere de nova linha após a leitura da primeira linha do documento
     file.ignore();
@@ -51,6 +50,32 @@ void readSparseMatrix(SparseMatrix*& m, string nome_do_arquivo){
 
         m->insert(i, j, value); // Insere o valor lido na matriz m nas posições i, j
     }
+}
+
+void saveFile(SparseMatrix*& m, string nome_do_arquivo){
+    // Abre o arquivo usando o ftream
+    fstream file(nome_do_arquivo, ios::out);
+
+    // Verifica se o arquivo está aberto adequadamente
+    // Se não estiver, lança uma exceção
+    if(!file.is_open()){
+        throw runtime_error("Erro ao abrir o arquivo");
+    }
+
+    // Coloca os valores de linha e coluna no arquivo
+    file << m->getLinhas() << " " << m->getColunas() << endl;
+
+    // Em seguida coloca as posições com seus respectivos valores se não uma região vazia
+    for (int i = 1; i <= m->getLinhas(); i++){
+        for (int j = 1; j <= m->getColunas(); j++){
+            double valor = m->get(i, j);
+            if(valor != 0 ){
+                file << i << " " << j << " " << valor << endl;            
+            }
+        }
+    }
+    
+    file.close();
 }
 
 // Função que soma duas matrizes
@@ -176,18 +201,32 @@ vector<string> lerComando(){
 // funçao que exibe o cabeçalho dos comandos disponíveis
 void mostrarAjuda(){
     cout << "=====================================================================================================" << endl;
+    cout << "|COMANDOS DISPONIVEIS:                                                                              |" << endl;
+    cout << "|===================================================================================================|" << endl;
     cout << "|sair ----------------------------------------------------------------------------- fecha o programa|" << endl;
     cout << "|criar n m ------------------------------------------------ cria uma matriz com n linhas e m colunas|" << endl;
     cout << "|mostrar i --------------------------------------------------- mostra a matriz na posicao i do vetor|" << endl;
+    cout << "|listar ------------------------------------------------------- lista as matrizes que estao no vetor|" << endl;
+    cout << "|removerMatriz i ------------------------------------------- remove uma matriz na posicao i do vetor|" << endl;
+    cout << "|apagarTudo --------------------------------------------- apaga todas as matrizes atuais do programa|" << endl;
+    cout << "|===================================================================================================|" << endl;
+    cout << "|OPERACOES MATEMATICAS:                                                                             |" << endl;
+    cout << "|===================================================================================================|" << endl;
     cout << "|soma i j ----------------------------------- soma uma matriz na posicao i com a matriz na posicao j|" << endl;
     cout << "|sub i j --------------------------------- subtrai uma matriz na posicao i com a matriz na posicao j|" << endl;
     cout << "|mult i j ----------------------------- multiplica uma matriz na posicao i com a matriz na posicao j|" << endl;
+    cout << "|comparar i j ------------------------- verifica se as matrizes na posicao i e j do vetor sao iguais|" << endl;
+    cout << "|===================================================================================================|" << endl;
+    cout << "|MANIPULACAO DE ELEMENTOS:                                                                          |" << endl;
+    cout << "|===================================================================================================|" << endl;
     cout << "|limpar i ----------------------------------------------------- limpa a matriz na posicao i do vetor|" << endl;
-    cout << "|ler m.txt ------------------------------ cria uma matriz sparsa baseada no arquivo com nome 'm.txt'|" << endl;
-    cout << "|remover i n m ------------------ remove uma valor na posicao (n, m) da matriz na posicao i do vetor|" << endl;
     cout << "|atualizar i n m valor ----------- coloca um valor na posicao (n, m) da matriz na posicao i do vetor|" << endl;
-    cout << "|listar ------------------------------------------------------- lista as matrizes que estao no vetor|" << endl;
-    cout << "|apagarTudo --------------------------------------------- apaga todas as matrizes atuais do programa|" << endl;
+    cout << "|remover i n m ------------------ remove uma valor na posicao (n, m) da matriz na posicao i do vetor|" << endl;
+    cout << "|===================================================================================================|" << endl;
+    cout << "|ARQUIVOS:                                                                                          |" << endl;
+    cout << "|===================================================================================================|" << endl;
+    cout << "|ler m.txt ------------------------------ cria uma matriz sparsa baseada no arquivo com nome 'm.txt'|" << endl;
+    cout << "|criarArquivo m.txt i -------------- cria um arquivo m.txt que recebe a matriz na posicao i da lista|" << endl;
     cout << "=====================================================================================================" << endl;
 }
 
@@ -610,6 +649,46 @@ int main(){
             }  
         }
 
+        // comando para criar arquivo baseado na matriz da lista
+        // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while
+        if(comando[0] == "criarArquivo" && comando.size() == 3){
+            try{
+                // verifica antes da conversão se o valor é inteiro
+                if((comando[2].find(".") != string::npos || comando[2].find(",") != string::npos)){
+                    throw invalid_argument("valor int nao inserido");
+                }
+
+                //passa o nome do arquivo para uma variavel e converte a posição da matriz pra int
+                string arquivo = comando[1];
+                int i = stoi(comando[2]);
+
+                // verifica se a lista está vazia, se não for o caso
+                // verifica se a posição da matriz pedida está na lista
+                // caso esteja chama a função de salvar matriz para inserir ela em um arquivo.txt
+                // se não, avisa que a matriz não existe naquela posição 
+                if(listaMatriz.empty()){
+                    cout << "sua lista de matriz esta vazia, adicione uma matriz." << endl;
+                    continue;
+                }else if(i == 0 || i < listaMatriz.size()){
+                    saveFile(listaMatriz[i], arquivo);
+                    cout << "matriz " << i << " foi salva no arquivo " << arquivo << " com sucesso!" << endl;
+                    continue;
+                }else{
+                    cout << "nao existe matriz em uma dessas posicões, digite uma posicao valida." << endl;
+                    continue;
+                }
+            }
+            // esses catchs notificam o usuário de que o arquivo não pode ser salvo
+            // ou notifica caso o valor digitado seja inválido
+            catch(const runtime_error& e){
+                cout << "erro: arquivo nao pode ser lido." << endl;
+                continue;
+            }catch(const invalid_argument& e){
+                cout << "erro: tipo do indice inserido e invalido, insira valores inteiros." << endl;
+                continue;
+            }
+        }
+
         // comando atualizar
         // faz a verificação do comando digitado pelo usuario e usa o try-catch para avisar se há exceções sem sair do while
         if(comando[0] == "atualizar" && comando.size() == 5){
@@ -713,6 +792,82 @@ int main(){
             // Quebra de linha
             cout << "\n";
             continue;
+        }
+
+        // Comando de comparar duas matrizes
+        if(comando[0] == "comparar" && comando.size() == 3){
+            try{
+                // Verifica antes da conversão se os valores são inteiros
+                if((comando[1].find(".") != string::npos || comando[1].find(",") != string::npos) &&
+                (comando[2].find(".") != string::npos || comando[2].find(",") != string::npos)){
+                    throw invalid_argument("valor int nao inserido");
+                }
+
+                // Converte os valores de string para int
+                int i = stoi(comando[1]);
+                int j = stoi(comando[2]);
+
+                // Verifica se lista é vazia se não for
+                // verifica se i e j são valores válidos dentro de lista
+                // Caso seja, faz a comparação se são ou não iguais
+                // Se não for avisa ao usuário que as posições passadas não existem
+                if(listaMatriz.empty()){
+                    cout << "sua lista de matriz esta vazia, adicione uma matriz." << endl;
+                    continue;
+                }else if(i == 0 || i < listaMatriz.size() && j == 0 || j < listaMatriz.size()){
+                    if(*listaMatriz[i] == *listaMatriz[j]){
+                        cout << "as matrizes " << i << " e " << j << " sao iguais." << endl;
+                        continue;
+                    }else{
+                        cout << "as matrizes " << i << " e " << j << " nao sao iguais." << endl;
+                        continue;
+                    }
+                }else{
+                    cout << "nao existe matriz em uma dessas posicões, digite uma posicao valida." << endl;
+                    continue;
+                }
+
+            }// Esse catch vai notificar ao usuário caso o valor digitado não seja inteiro
+            catch(const invalid_argument& e){
+                cout << "erro: valores invalidos para comparar matrizes." << endl;
+                continue;
+            }
+        }
+        
+        //comando para remover matriz de uma região da lista
+        if(comando[0] == "removerMatriz" && comando.size() == 2){
+            try{
+                // Verifica antes da conversão se os valores são inteiros
+                if((comando[1].find(".") != string::npos || comando[1].find(",") != string::npos)){
+                    throw invalid_argument("valor int nao inserido");
+                }
+
+                // Converte os valores de string para int
+                int i = stoi(comando[1]);
+
+                // Verifica se a lista não está vazia
+                // Depois verifica se o valor passado é válido dentro da lista
+                // Se for, desaloca e depois limpa a região onde a matriz estava
+                // Se não for, avisa que a região da lista não existe
+                if(listaMatriz.empty()){
+                    cout << "nao ha matrizes na lista para serem removidas." << endl;
+                    continue;
+                }else if(i == 0 || i < listaMatriz.size()){
+                    delete listaMatriz[i];
+                    listaMatriz.erase(listaMatriz.begin() + i);
+
+                    cout << "matriz na posicao " << i << " foi removida com sucesso" << endl;
+                    continue;
+                }else{
+                    cout << "nao existe matriz nessa posicao, digite uma posicao valida." << endl;
+                    continue;
+                }
+
+            }// Esse catch vai notificar ao usuário caso o valor digitado não seja inteiro
+            catch(const invalid_argument& e){
+                cout << "erro: tipo do indice inserido e invalido, insira valores inteiros" << endl;
+                continue;
+            }
         }
 
         // caso o que foi digitado não passar por nenhum comando avisa ao usuário que o comando passado é inválido

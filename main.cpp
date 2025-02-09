@@ -643,10 +643,15 @@ int main(){
                 continue;
             }
             // esse catch notifica o usuário de que o arquivo digitado não pode ser lido caso digite um valor inválido
+            // ou se algum valor passado no arquivo é inválido (arquivo vazio ou índices inválidos para inserir valores)
             catch(const runtime_error& e){
                 cout << "erro: arquivo nao pode ser lido." << endl;
                 continue;
-            }  
+            }
+            catch(const out_of_range& e){
+                cout << "erro: nao e possivel criar uma matriz a partir do arquivo." << endl;
+                continue;
+            } 
         }
 
         // comando para criar arquivo baseado na matriz da lista

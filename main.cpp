@@ -679,7 +679,7 @@ int main(){
                     cout << "matriz " << i << " foi salva no arquivo " << arquivo << " com sucesso!" << endl;
                     continue;
                 }else{
-                    cout << "nao existe matriz em uma dessas posicões, digite uma posicao valida." << endl;
+                    cout << "nao existe matriz em uma dessas posicoes, digite uma posicao valida." << endl;
                     continue;
                 }
             }
@@ -822,7 +822,7 @@ int main(){
                 }
                 
                 if(i < 0 || i >= listaMatriz.size() || j < 0 || j >= listaMatriz.size()){
-                    cout << "nao existe matriz em uma dessas posicões, digite uma posicao valida." << endl;
+                    cout << "nao existe matriz em uma dessas posicoes, digite uma posicao valida." << endl;
                     continue;
                 }else{
                     if(*listaMatriz[i] == *listaMatriz[j]){

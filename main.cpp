@@ -813,22 +813,23 @@ int main(){
                 int j = stoi(comando[2]);
 
                 // Verifica se lista é vazia se não for
-                // verifica se i e j são valores válidos dentro de lista
-                // Caso seja, faz a comparação se são ou não iguais
-                // Se não for avisa ao usuário que as posições passadas não existem
+                // verifica se i e j são valores inválidos dentro de lista
+                // Se forem inválidos avisa ao usuário que as posições passadas não existem
+                // Caso não sejam inválidos, faz a comparação se são ou não iguais
                 if(listaMatriz.empty()){
                     cout << "sua lista de matriz esta vazia, adicione uma matriz." << endl;
                     continue;
-                }else if(i == 0 || i < listaMatriz.size() && j == 0 || j < listaMatriz.size()){
+                }
+                
+                if(i < 0 || i >= listaMatriz.size() || j < 0 || j >= listaMatriz.size()){
+                    cout << "nao existe matriz em uma dessas posicões, digite uma posicao valida." << endl;
+                    continue;
+                }else{
                     if(*listaMatriz[i] == *listaMatriz[j]){
                         cout << "as matrizes " << i << " e " << j << " sao iguais." << endl;
-                        continue;
                     }else{
                         cout << "as matrizes " << i << " e " << j << " nao sao iguais." << endl;
-                        continue;
                     }
-                }else{
-                    cout << "nao existe matriz em uma dessas posicões, digite uma posicao valida." << endl;
                     continue;
                 }
 
